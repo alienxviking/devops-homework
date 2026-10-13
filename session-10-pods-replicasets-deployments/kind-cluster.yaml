@@ -1,0 +1,21 @@
+# local multi-node cluster used for sessions 10-15
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: devops
+nodes:
+  - role: control-plane
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "ingress-ready=true"
+    extraPortMappings:
+      - containerPort: 80       # ingress-nginx http
+        hostPort: 80
+      - containerPort: 443      # ingress-nginx https
+        hostPort: 443
+      - containerPort: 30080    # NodePort demo
+        hostPort: 30080
+  - role: worker
+  - role: worker

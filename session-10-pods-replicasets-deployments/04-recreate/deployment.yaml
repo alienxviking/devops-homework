@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-recreate
+spec:
+  replicas: 3
+  strategy:
+    type: Recreate         # kill all old pods first, then create the new ones
+  selector:
+    matchLabels:
+      app: web-recreate
+  template:
+    metadata:
+      labels:
+        app: web-recreate
+    spec:
+      containers:
+        - name: app
+          image: hashicorp/http-echo:1.0
+          args: ["-text=recreate v1"]
+          ports:
+            - containerPort: 5678

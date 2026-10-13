@@ -1,0 +1,17 @@
+# Running but not Ready (0/1) until the readiness probe passes
+apiVersion: v1
+kind: Pod
+metadata:
+  name: readiness-pod
+  labels:
+    demo: lifecycle
+spec:
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: ["sh", "-c", "sleep 15; touch /tmp/ready; sleep 3600"]
+      readinessProbe:
+        exec:
+          command: ["cat", "/tmp/ready"]
+        initialDelaySeconds: 2
+        periodSeconds: 3

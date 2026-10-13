@@ -1,0 +1,13 @@
+# container exits with code 0 and restartPolicy Never -> Succeeded (Completed)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: succeeded-pod
+  labels:
+    demo: lifecycle
+spec:
+  restartPolicy: Never
+  containers:
+    - name: job
+      image: busybox:1.36
+      command: ["sh", "-c", "echo 'doing some work...'; sleep 5; echo 'done'; exit 0"]

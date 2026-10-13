@@ -1,0 +1,19 @@
+# preStop hook + grace period -> pod shows Terminating while it shuts down
+apiVersion: v1
+kind: Pod
+metadata:
+  name: graceful-pod
+  labels:
+    demo: lifecycle
+spec:
+  terminationGracePeriodSeconds: 20
+  containers:
+    - name: app
+      image: nginx:1.27-alpine
+      lifecycle:
+        postStart:
+          exec:
+            command: ["sh", "-c", "echo 'postStart hook ran' > /usr/share/nginx/html/hook.txt"]
+        preStop:
+          exec:
+            command: ["sh", "-c", "sleep 8"]

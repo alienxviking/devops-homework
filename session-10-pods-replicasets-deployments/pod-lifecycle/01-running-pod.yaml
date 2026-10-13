@@ -1,0 +1,13 @@
+# normal pod: Pending -> ContainerCreating -> Running
+apiVersion: v1
+kind: Pod
+metadata:
+  name: running-pod
+  labels:
+    demo: lifecycle
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.27-alpine
+      ports:
+        - containerPort: 80

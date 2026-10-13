@@ -1,0 +1,15 @@
+# asks for more CPU than any node has -> stays Pending (FailedScheduling)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pending-pod
+  labels:
+    demo: lifecycle
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.27-alpine
+      resources:
+        requests:
+          cpu: "64"
+          memory: 128Mi

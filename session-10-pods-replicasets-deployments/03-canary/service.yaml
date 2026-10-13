@@ -1,0 +1,11 @@
+# selects only app=shop, so it load balances across stable AND canary pods
+apiVersion: v1
+kind: Service
+metadata:
+  name: shop-service
+spec:
+  selector:
+    app: shop
+  ports:
+    - port: 80
+      targetPort: 5678

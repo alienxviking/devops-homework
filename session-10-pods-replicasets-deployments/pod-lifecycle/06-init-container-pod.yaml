@@ -1,0 +1,25 @@
+# init container must finish before the main container starts -> Init:0/1 -> PodInitializing -> Running
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-pod
+  labels:
+    demo: lifecycle
+spec:
+  initContainers:
+    - name: wait-for-setup
+      image: busybox:1.36
+      command: ["sh", "-c", "echo 'init: preparing config'; sleep 10; echo 'init done' > /work/ready.txt"]
+      volumeMounts:
+        - name: work
+          mountPath: /work
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: ["sh", "-c", "cat /work/ready.txt; sleep 3600"]
+      volumeMounts:
+        - name: work
+          mountPath: /work
+  volumes:
+    - name: work
+      emptyDir: {}

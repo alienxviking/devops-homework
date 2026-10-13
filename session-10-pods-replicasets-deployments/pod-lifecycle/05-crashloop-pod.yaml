@@ -1,0 +1,13 @@
+# exits with error but restartPolicy Always -> restarts with backoff -> CrashLoopBackOff
+apiVersion: v1
+kind: Pod
+metadata:
+  name: crashloop-pod
+  labels:
+    demo: lifecycle
+spec:
+  restartPolicy: Always
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: ["sh", "-c", "echo 'starting...'; sleep 3; echo 'crash!'; exit 1"]

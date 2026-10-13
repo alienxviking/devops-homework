@@ -1,0 +1,13 @@
+# container exits with code 1 and restartPolicy Never -> Failed (Error)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: failed-pod
+  labels:
+    demo: lifecycle
+spec:
+  restartPolicy: Never
+  containers:
+    - name: job
+      image: busybox:1.36
+      command: ["sh", "-c", "echo 'something went wrong'; exit 1"]

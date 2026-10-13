@@ -1,0 +1,11 @@
+# image tag does not exist -> ErrImagePull -> ImagePullBackOff (stays Pending)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: imagepull-pod
+  labels:
+    demo: lifecycle
+spec:
+  containers:
+    - name: app
+      image: nginx:9.99-does-not-exist
