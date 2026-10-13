@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: guestbook
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: guestbook
@@ -15,7 +15,7 @@ spec:
       containers:
         - name: web
           image: hashicorp/http-echo:1.0
-          args: ["-listen=:8080", "-text=guestbook v1 - deployed by Argo CD from git"]
+          args: ["-listen=:8080", "-text=guestbook v2 - deployed by Argo CD from git"]
           ports:
             - containerPort: 8080
           resources:
