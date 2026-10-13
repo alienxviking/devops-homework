@@ -1,0 +1,8 @@
+title = "gitleaks config for session 17"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "test fixtures"
+paths = ['''tests/''']

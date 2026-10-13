@@ -1,0 +1,2 @@
+# bandit config - scan app code only, report medium+ severity
+exclude_dirs: ["tests"]
