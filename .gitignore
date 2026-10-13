@@ -7,3 +7,5 @@ screenshots/*.txt
 node_modules/
 __pycache__/
 target/
+tfplan
+*.tfplan
