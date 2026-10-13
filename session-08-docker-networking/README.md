@@ -61,7 +61,7 @@ docker run -d --name apache2-host --network host ubuntu/apache2
 curl http://localhost:80
 ```
 
-With `--network host` the container uses the host's network stack directly: it has no own IP, no port mapping (`Ports=map[]`), and Apache listens on port 80 of the host itself (`ss` shows it on `*:80`).
+With `--network host` the container uses the host's network stack directly: it is only attached to the `host` network, has no port mapping (`Ports={}`), and Apache listens on port 80 of the host itself (`ss` shows it on `*:80`).
 
 ![apache2 host network](screenshots/05-apache2-host-network.png)
 
