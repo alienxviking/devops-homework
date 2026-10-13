@@ -1,0 +1,16 @@
+# stuck in ContainerCreating: the configmap it mounts does not exist
+apiVersion: v1
+kind: Pod
+metadata:
+  name: config-mount-demo
+spec:
+  containers:
+    - name: app
+      image: nginx:1.27
+      volumeMounts:
+        - name: app-config
+          mountPath: /etc/app
+  volumes:
+    - name: app-config
+      configMap:
+        name: app-settings
