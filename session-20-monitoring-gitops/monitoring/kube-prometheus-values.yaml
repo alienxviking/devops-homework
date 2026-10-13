@@ -1,0 +1,31 @@
+# kube-prometheus-stack values for the kind lab cluster
+grafana:
+  adminPassword: devops-hw-2026
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts: [grafana.local]
+prometheus:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts: [prometheus.local]
+  prometheusSpec:
+    # pick up ServiceMonitors / PrometheusRules from any namespace, not only ones labelled for this release
+    serviceMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    retention: 2d
+alertmanager:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts: [alertmanager.local]
+# control plane components are not reachable the usual way on kind
+kubeEtcd:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeProxy:
+  enabled: false

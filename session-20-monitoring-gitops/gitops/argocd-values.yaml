@@ -1,0 +1,15 @@
+# Argo CD for the kind lab: plain HTTP behind ingress-nginx at argocd.local
+configs:
+  params:
+    server.insecure: true
+  cm:
+    timeout.reconciliation: 60s   # poll git every 60s instead of 180s (lab only)
+server:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hostname: argocd.local
+dex:
+  enabled: false
+notifications:
+  enabled: false

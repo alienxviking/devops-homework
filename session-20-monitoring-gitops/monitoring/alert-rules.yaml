@@ -1,0 +1,31 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: homework-alerts
+  namespace: demo
+spec:
+  groups:
+    - name: homework.rules
+      rules:
+        - alert: PodCrashLooping
+          expr: increase(kube_pod_container_status_restarts_total{namespace="demo"}[5m]) > 2
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Pod {{ $labels.pod }} is crash looping"
+            description: "{{ $labels.pod }} restarted {{ $value | humanize }} times in 5 minutes."
+        - alert: HighPodCPU
+          expr: sum(rate(container_cpu_usage_seconds_total{namespace="demo", container!=""}[2m])) by (pod) > 0.1
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Pod {{ $labels.pod }} CPU above 100m"
+        - alert: AppDown
+          expr: up{job="metrics-app"} == 0
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "metrics-app target {{ $labels.instance }} is down"

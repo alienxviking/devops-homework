@@ -1,0 +1,20 @@
+# traffic generator so the request-rate graphs have data (and CPU goes up)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traffic
+  namespace: demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: traffic
+  template:
+    metadata:
+      labels:
+        app: traffic
+    spec:
+      containers:
+        - name: curl
+          image: curlimages/curl:8.11.1
+          command: ["sh", "-c", "while true; do curl -s -o /dev/null http://metrics-app:8080/; curl -s -o /dev/null http://metrics-app:8080/err; done"]

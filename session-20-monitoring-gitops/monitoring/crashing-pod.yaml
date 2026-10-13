@@ -1,0 +1,11 @@
+# broken on purpose to trigger the PodCrashLooping alert
+apiVersion: v1
+kind: Pod
+metadata:
+  name: crashing-worker
+  namespace: demo
+spec:
+  containers:
+    - name: worker
+      image: busybox:1.36
+      command: ["sh", "-c", "echo 'worker starting'; sleep 5; echo 'cannot connect to queue'; exit 1"]
