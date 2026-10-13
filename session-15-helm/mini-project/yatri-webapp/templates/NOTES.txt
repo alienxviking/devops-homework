@@ -1,0 +1,8 @@
+{{ .Chart.Name }} deployed as release "{{ .Release.Name }}" in namespace "{{ .Release.Namespace }}" ({{ .Values.environment }}).
+{{- if .Values.ingress.enabled }}
+
+Open:  http://{{ .Values.ingress.host }}/       (frontend)
+       http://{{ .Values.ingress.host }}/api/   (backend)
+{{- end }}
+
+Check: kubectl get all -n {{ .Release.Namespace }} -l app.kubernetes.io/instance={{ .Release.Name }}

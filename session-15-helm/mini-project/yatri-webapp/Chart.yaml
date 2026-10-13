@@ -1,0 +1,8 @@
+apiVersion: v2
+name: yatri-webapp
+description: Two tier web app (nginx frontend + API backend) with config, secret, ingress and autoscaling
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+maintainers:
+  - name: Snehangshu Roy

@@ -1,0 +1,14 @@
+environment: prod
+frontend:
+  replicaCount: 3
+  color: "#1f9d55"
+backend:
+  replicaCount: 2
+config:
+  LOG_LEVEL: "WARN"
+ingress:
+  host: yatri-prod.local
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 6

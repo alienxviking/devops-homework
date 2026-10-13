@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "yatri.fullname" . }}-backend
+  labels:
+    {{- include "yatri.labels" . | nindent 4 }}
+    tier: backend
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        tier: backend
+    spec:
+      containers:
+        - name: api
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          args:
+            - '-text={"service":"backend","env":"{{ .Values.environment }}","message":"{{ .Values.backend.message }}","revision":{{ .Release.Revision }}}'
+          ports:
+            - containerPort: 5678
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "yatri.fullname" . }}-secret
+                  key: DB_PASSWORD
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "yatri.fullname" . }}-backend
+  labels:
+    {{- include "yatri.labels" . | nindent 4 }}
+spec:
+  selector:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    tier: backend
+  ports:
+    - port: 80
+      targetPort: 5678

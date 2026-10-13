@@ -1,0 +1,8 @@
+environment: dev
+frontend:
+  replicaCount: 1
+  color: "#2b7de9"
+config:
+  LOG_LEVEL: "DEBUG"
+ingress:
+  host: yatri-dev.local

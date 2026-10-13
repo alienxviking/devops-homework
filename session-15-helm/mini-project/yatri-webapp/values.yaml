@@ -1,0 +1,47 @@
+# default values - override per environment with values-dev.yaml / values-prod.yaml
+environment: dev
+
+frontend:
+  replicaCount: 1
+  image:
+    repository: nginx
+    tag: "1.27-alpine"
+  title: "Yatri Web App"
+  color: "#2b7de9"
+
+backend:
+  replicaCount: 1
+  image:
+    repository: hashicorp/http-echo
+    tag: "1.0"
+  message: "hello from the yatri backend"
+
+config:
+  LOG_LEVEL: "INFO"
+  FEATURE_BOOKINGS: "true"
+
+secret:
+  dbPassword: "change-me"
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: nginx
+  host: yatri-dev.local
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 60
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 32Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
