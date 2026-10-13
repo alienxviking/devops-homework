@@ -1,0 +1,16 @@
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.1  0.0  21152 11520 ?        Ss   17:43   0:00 /sbin/init
+root          24  0.0  0.1  50364 15104 ?        S<s  17:43   0:00 /usr/lib/systemd/systemd-journald
+message+      79  0.0  0.0   8160  4352 ?        Ss   17:43   0:00 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-a
+root          85  0.0  0.0  12024  7936 ?        Ss   17:43   0:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+root        1215  0.0  0.0   7228  2304 ?        Ss   17:54   0:00 /usr/sbin/cron -f -P
+root        1307  0.0  0.0  11164  1608 ?        Ss   17:54   0:00 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+www-data    1308  0.0  0.0  11536  2632 ?        S    17:54   0:00 nginx: worker process
+www-data    1309  0.0  0.0  11536  2632 ?        S    17:54   0:00 nginx: worker process
+www-data    1310  0.0  0.0  11536  2632 ?        S    17:54   0:00 nginx: worker process
+www-data    1312  0.0  0.0  11536  2632 ?        S    17:54   0:00 nginx: worker process
+snehang+    1973  0.0  0.0   7344  3840 ?        Ss   17:55   0:00 -bash /usr/local/bin/rec /home/snehangshu/devops-homework/session-03-shel
+snehang+    1985  0.0  0.0  17388  5120 ?        Sl   17:55   0:00 expect -c log_user 1; set timeout 30; spawn -noecho bash -c {./sysinfo.sh
+snehang+    1986  0.0  0.0   5712  1792 ?        S    17:55   0:00 tr -d \r
+snehang+    1987  0.0  0.0   7344  3584 pts/0    Ss+  17:55   0:00 /bin/bash ./sysinfo.sh
+snehang+    1999  0.0  0.0  10888  4352 pts/0    R+   17:55   0:00 ps aux
