@@ -1,0 +1,14 @@
+# same PV but with a storageClassName so the claim binds to it (and not to the default "standard" class)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: student-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /tmp/student-data
