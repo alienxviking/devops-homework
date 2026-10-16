@@ -16,7 +16,7 @@ Project: [`terraform-aws-infra/`](terraform-aws-infra)
 | [storage.tf](terraform-aws-infra/storage.tf) | S3 bucket (random suffix), versioning, public access block |
 | [outputs.tf](terraform-aws-infra/outputs.tf) | **Outputs**: IDs, public IP, AMI, bucket name |
 
-> Same as session 18, the AWS provider points to **LocalStack** (local AWS emulator), so this ran without an AWS account. EC2 in LocalStack is emulated (the API works and returns real-looking IDs and IPs, but no VM actually boots). Removing the endpoint/dummy-key lines in `provider.tf` makes the same code deploy to a real AWS account.
+> Deployed to a **real AWS account** (free plan), region `ap-south-1`, as the IAM user `terraform-student` (credentials from `aws configure`, nothing hard-coded). EC2 is a `t3.micro` running Ubuntu 24.04 (latest Canonical AMI found with a data source). Everything was destroyed at the end.
 
 ## Architecture
 
@@ -90,6 +90,28 @@ VPC, both subnets, the route `0.0.0.0/0 → igw-...`, the security group rules, 
 
 ![verify](screenshots/06-verify-aws-cli.png)
 
+The nginx page installed by `user_data`, opened in the browser on the instance's public IP:
+
+![browser ec2](screenshots/06b-browser-ec2.png)
+
+### Same resources in the AWS console
+
+VPC `yatri-dev-vpc` (10.10.0.0/16):
+
+![console vpc](screenshots/09-console-vpc.png)
+
+Public subnet in ap-south-1a and private subnet in ap-south-1b (the three unnamed `172.31.x.x` ones belong to the account's default VPC, not to Terraform):
+
+![console subnets](screenshots/10-console-subnets.png)
+
+EC2 instance `yatri-dev-web` (t3.micro, running):
+
+![console ec2](screenshots/11-console-ec2.png)
+
+S3 bucket `yatri-dev-assets-...`:
+
+![console s3](screenshots/12-console-s3.png)
+
 ## 7. Changing infrastructure
 
 Changing only `allowed_ssh_cidr` → plan shows **1 to change** (security group updated in place, nothing recreated). An invalid `instance_type` is rejected by the variable validation before any API call.
@@ -98,7 +120,7 @@ Changing only `allowed_ssh_cidr` → plan shows **1 to change** (security group 
 
 ## 8. `terraform destroy`
 
-Everything is deleted in reverse dependency order and the state is empty.
+All 12 resources are deleted in reverse dependency order (EC2 first, VPC last) and the state is empty, so nothing keeps running on the account.
 
 ![destroy](screenshots/08-destroy.png)
 

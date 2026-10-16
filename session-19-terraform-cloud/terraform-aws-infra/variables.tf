@@ -3,11 +3,6 @@ variable "aws_region" {
   default = "ap-south-1"
 }
 
-variable "localstack_endpoint" {
-  type    = string
-  default = "http://localhost:4566"
-}
-
 variable "project" {
   type    = string
   default = "yatri"

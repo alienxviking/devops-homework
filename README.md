@@ -32,5 +32,5 @@ Every session folder has a `README.md` with the commands, the real output (scree
 - Windows 11 + Docker Desktop
 - An Ubuntu 24.04 container (`devops-lab`) as the Linux workstation for the Linux/shell/networking/git labs and as the CLI box for docker, kubectl, helm, terraform, aws
 - Kubernetes: Minikube (session 9), kind multi-node clusters (sessions 10-21)
-- AWS: LocalStack emulator (sessions 18, 19, 21) - no AWS account
+- AWS: real AWS account, region ap-south-1 (sessions 18, 19 - destroyed after the screenshots); LocalStack emulator for the session 21 project
 - CI/CD: GitHub Actions in this repo ([workflows](.github/workflows)), images in GHCR
