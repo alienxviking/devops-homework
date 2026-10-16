@@ -4,16 +4,17 @@ Creates an S3 bucket with Terraform: versioning, AES256 server-side encryption, 
 
 | File | Purpose |
 |---|---|
-| `provider.tf` | Terraform + AWS provider version, provider settings (LocalStack endpoint), default tags |
+| `provider.tf` | Terraform + AWS provider version, region, default tags |
 | `variables.tf` | Input variables (region, bucket name, environment, versioning flag) |
 | `terraform.tfvars` | Values for the variables |
 | `main.tf` | Resources: bucket, versioning, encryption, public access block, object |
 | `outputs.tf` | Bucket name, ARN, region, versioning status |
 
-> I don't have an AWS account set up, so the provider points to **LocalStack** (an AWS API emulator on `localhost:4566`) with dummy keys. Same code works on real AWS after removing the `endpoints` / `skip_*` lines and the dummy keys.
+> Runs on real AWS (`ap-south-1`). Credentials come from `aws configure` (IAM user, not root) - never put keys in `.tf` files.
 
 ```bash
-docker run -d --name localstack -p 4566:4566 localstack/localstack:4.4
+aws configure            # access key of the IAM user, region ap-south-1
+aws sts get-caller-identity
 terraform init
 terraform fmt
 terraform validate

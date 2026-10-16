@@ -4,12 +4,6 @@ variable "aws_region" {
   default     = "ap-south-1"
 }
 
-variable "localstack_endpoint" {
-  description = "LocalStack edge endpoint"
-  type        = string
-  default     = "http://localhost:4566"
-}
-
 variable "bucket_name" {
   description = "Name of the S3 bucket (must be globally unique on real AWS)"
   type        = string

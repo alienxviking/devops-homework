@@ -23,11 +23,13 @@ session-18-terraform-iac/
 
 Terraform v1.12.2, AWS provider 5.x.
 
-**Note about AWS:** I ran this against **LocalStack 4.4**, a local emulator of the AWS APIs, so no AWS account or cost was needed. Terraform talks to it exactly like it talks to AWS (same provider, same resources, same API calls), just with a different endpoint in [`provider.tf`](terraform-s3-demo/provider.tf). To use real AWS, remove the `endpoints`, `skip_*` and dummy key lines and run `aws configure`.
+Ran on a **real AWS account** (free plan), region `ap-south-1` (Mumbai). Terraform uses an IAM user `terraform-student` set up with `aws configure` - no keys in the code, see [`provider.tf`](terraform-s3-demo/provider.tf).
 
 ### Setup
 
-![localstack and files](screenshots/01-localstack-and-files.png)
+`aws sts get-caller-identity` shows the IAM user Terraform will run as, plus the project files.
+
+![aws account and files](screenshots/01-aws-account-and-files.png)
 
 ### `terraform init`
 
@@ -57,9 +59,13 @@ Shows what will change: **5 to add** (bucket, versioning, encryption, public acc
 
 ![show output](screenshots/06-show-output-verify.png)
 
+Same bucket in the AWS console (S3 → `snehangshu-devops-hw-bucket`):
+
+![console s3 bucket](screenshots/08-console-s3-bucket.png)
+
 ### `terraform destroy`
 
-All 5 resources removed. The bucket list and the state are now empty.
+All 5 resources removed (so nothing is left running/billing in the account). The bucket list and the state are now empty.
 
 ![destroy](screenshots/07-destroy.png)
 
