@@ -3,7 +3,6 @@ screenshots/*.txt
 *.log
 .terraform/
 *.tfstate*
-.terraform.lock.hcl
 node_modules/
 __pycache__/
 target/
