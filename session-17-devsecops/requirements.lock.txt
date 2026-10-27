@@ -21,11 +21,11 @@ charset-normalizer==3.5.2
     # via requests
 click==8.5.0
     # via uvicorn
-cyclonedx-python-lib==7.6.2
+cyclonedx-python-lib==11.12.0
     # via pip-audit
 defusedxml==0.7.1
     # via py-serializable
-fastapi==0.143.0
+fastapi==0.162.0
     # via -r requirements.txt
 filelock==4.2.4
     # via cachecontrol
@@ -67,13 +67,13 @@ pip==26.2.2
     # via pip-api
 pip-api==0.0.35
     # via pip-audit
-pip-audit==2.7.3
+pip-audit==2.10.1
     # via -r requirements-dev.txt
 pip-requirements-parser==32.0.1
     # via pip-audit
 pluggy==1.7.0
     # via pytest
-py-serializable==1.1.2
+py-serializable==2.1.0
     # via cyclonedx-python-lib
 pydantic==2.14.1
     # via fastapi
@@ -83,7 +83,7 @@ pygments==2.21.0
     # via rich
 pyparsing==3.3.3
     # via pip-requirements-parser
-pytest==8.3.4
+pytest==9.1.1
     # via -r requirements-dev.txt
 pyyaml==6.0.3
     # via
