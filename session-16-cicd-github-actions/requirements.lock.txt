@@ -1,0 +1,42 @@
+blinker==1.9.0
+    # via flask
+click==8.5.0
+    # via flask
+coverage==7.17.0
+    # via pytest-cov
+flake8==7.1.1
+    # via -r requirements-dev.txt
+flask==3.1.0
+    # via -r requirements.txt
+gunicorn==23.0.0
+    # via -r requirements.txt
+iniconfig==2.3.1
+    # via pytest
+itsdangerous==2.2.0
+    # via flask
+jinja2==3.1.6
+    # via flask
+markupsafe==3.0.4
+    # via
+    #   jinja2
+    #   werkzeug
+mccabe==0.7.0
+    # via flake8
+packaging==26.3
+    # via
+    #   gunicorn
+    #   pytest
+pluggy==1.7.0
+    # via pytest
+pycodestyle==2.12.1
+    # via flake8
+pyflakes==3.2.0
+    # via flake8
+pytest==8.3.4
+    # via
+    #   -r requirements-dev.txt
+    #   pytest-cov
+pytest-cov==6.0.0
+    # via -r requirements-dev.txt
+werkzeug==3.1.9
+    # via flask

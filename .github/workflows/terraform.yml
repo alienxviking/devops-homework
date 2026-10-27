@@ -1,0 +1,70 @@
+name: Terraform checks
+
+# fmt + validate for every terraform root in the repo, and a checkov scan.
+# No `terraform plan`: it needs real AWS credentials, and the session 18/19 and
+# session 21 EKS stacks were destroyed after the screenshots, so a plan would
+# only ever show "create everything".
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "session-18-terraform-iac/**"
+      - "session-19-terraform-cloud/**"
+      - "final-devops-project/terraform/**"
+      - ".checkov.yaml"
+      - ".github/workflows/terraform.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "session-18-terraform-iac/**"
+      - "session-19-terraform-cloud/**"
+      - "final-devops-project/terraform/**"
+      - ".checkov.yaml"
+      - ".github/workflows/terraform.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: fmt + validate (${{ matrix.dir }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dir:
+          - session-18-terraform-iac/terraform-s3-demo
+          - session-19-terraform-cloud/terraform-aws-infra
+          - final-devops-project/terraform
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.17.0
+          terraform_wrapper: false
+      - run: terraform fmt -check -recursive -diff
+      - run: terraform init -backend=false -input=false
+      - run: terraform validate
+
+  checkov:
+    name: Checkov (IaC security scan)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install checkov==3.2.500
+      # skipped checks and the reasons are in .checkov.yaml
+      - run: |
+          rc=0
+          for d in session-18-terraform-iac/terraform-s3-demo \
+                   session-19-terraform-cloud/terraform-aws-infra \
+                   final-devops-project/terraform; do
+            echo "::group::$d"
+            checkov --config-file .checkov.yaml -d "$d" || rc=1
+            echo "::endgroup::"
+          done
+          exit $rc
