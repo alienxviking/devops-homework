@@ -1,0 +1,31 @@
+# checkov config for the terraform in this repo (session 18, session 19, final project).
+# These are small course stacks that were applied on a free-plan AWS account for the
+# screenshots and destroyed afterwards, so the checks below are skipped on purpose.
+# Any other failing check fails the terraform workflow.
+framework:
+  - terraform
+compact: true
+quiet: true
+skip-check:
+  # S3 - single demo / backup buckets, nothing to log to, replicate to or notify
+  - CKV_AWS_18    # access logging
+  - CKV_AWS_144   # cross-region replication
+  - CKV2_AWS_62   # event notifications
+  - CKV2_AWS_61   # lifecycle configuration (session 18/19 demo buckets)
+  - CKV_AWS_300   # abort incomplete multipart uploads (backups bucket lifecycle)
+  - CKV_AWS_145   # KMS by default - SSE-S3 (AES256) is used, no KMS key costs
+  # VPC
+  - CKV2_AWS_11   # flow logs (CloudWatch cost)
+  - CKV2_AWS_12   # default security group left as AWS creates it, nothing uses it
+  - CKV_AWS_130   # public subnets auto-assign public IPs on purpose (no NAT gateway on the free plan)
+  # session 19 web server (nginx on one t3.micro)
+  - CKV_AWS_260   # port 80 open to the internet - it is the web server
+  - CKV_AWS_382   # egress anywhere - apt-get install at boot
+  - CKV_AWS_126   # detailed monitoring is paid
+  - CKV_AWS_135   # t3 instances are EBS-optimized by default
+  - CKV2_AWS_41   # instance needs no IAM role
+  # session 19 - worth fixing if the stack is applied again, kept as it was applied
+  # for the session screenshots: IMDSv2 only, encrypted root volume, rule descriptions
+  - CKV_AWS_79
+  - CKV_AWS_8
+  - CKV_AWS_23
