@@ -27,6 +27,48 @@ Every session folder has a `README.md` with the commands, the real output (scree
 | 20 | Monitoring, Observability & GitOps | [session-20-monitoring-gitops](session-20-monitoring-gitops/README.md) |
 | 21 | Final DevOps Project & Troubleshooting | [final-devops-project](final-devops-project/README.md) |
 
+## Quickstart
+
+The final project (TripBoard) runs locally with just Docker:
+
+```bash
+git clone https://github.com/alienxviking/devops-homework
+cd devops-homework/final-devops-project
+docker compose -f docker/docker-compose.yml up --build
+# frontend: http://localhost:3000   api: http://localhost:8000/health
+```
+
+Running the tests (Python 3.12):
+
+```bash
+# session 16 / 17 - lockfile has the app and test dependencies pinned
+cd session-16-cicd-github-actions        # or session-17-devsecops
+pip install -r requirements.lock.txt
+pytest
+
+# final project backend (uses sqlite in the tests, no database needed)
+cd final-devops-project/application/backend
+pip install -r requirements.txt -r requirements-dev.txt
+pytest
+```
+
+Terraform (sessions 18, 19, 21) is checked with `terraform fmt`, `terraform validate` and checkov in [terraform.yml](.github/workflows/terraform.yml). Applying it needs real AWS credentials, see each session README.
+
+## Environment variables
+
+None of these need to be set to run the tests; the defaults are below.
+
+| Variable | Used by | Default |
+|---|---|---|
+| `APP_VERSION` | session 16, 17 and the final backend (version the app reports) | `dev` (CI images get the commit SHA as a build arg) |
+| `APP_CONFIG` | session 17, path of the YAML config | `config.yaml` |
+| `DATABASE_URL` | final backend | `postgresql+psycopg://tripboard:tripboard@localhost:5432/tripboard` |
+| `ENVIRONMENT` | final backend | `local` |
+| `POSTGRES_PASSWORD` | final project docker-compose | `tripboard-local` |
+| `BACKEND_URL` | final frontend (nginx upstream) | `http://backend:8000` |
+
+The final backend also reads these from a `.env` file in its working directory (pydantic-settings).
+
 ## Setup used
 
 - Windows 11 + Docker Desktop
