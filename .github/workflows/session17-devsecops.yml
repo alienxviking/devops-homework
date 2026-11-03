@@ -24,8 +24,8 @@ jobs:
       run:
         working-directory: session-17-devsecops
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Install dependencies (build)
@@ -34,7 +34,7 @@ jobs:
         run: python -m compileall -q app
       - name: Unit tests
         run: pytest -v --junitxml=reports/unit-tests.xml
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: unit-test-report
@@ -45,8 +45,8 @@ jobs:
     needs: build-test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - run: pip install bandit==1.9.4 semgrep==1.180.0
@@ -57,7 +57,7 @@ jobs:
           bandit -r $APP_DIR/app -c $APP_DIR/security/bandit.yaml --severity-level medium
       - name: Semgrep
         run: semgrep scan --config p/python --config p/owasp-top-ten --error --metrics=off --json --output reports/semgrep.json $APP_DIR/app
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: sast-reports
@@ -68,8 +68,8 @@ jobs:
     needs: sast
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - run: pip install pip-audit==2.7.3
@@ -81,7 +81,7 @@ jobs:
       - name: Trivy filesystem scan (dependencies)
         run: |
           docker run --rm -v "$PWD:/src" aquasec/trivy:0.67.2 fs --scanners vuln             --severity HIGH,CRITICAL --exit-code 1 --no-progress /src/$APP_DIR
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: sca-reports
@@ -92,7 +92,7 @@ jobs:
     needs: sca
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Gitleaks
@@ -100,7 +100,7 @@ jobs:
           docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:v8.21.2 \
             dir /repo/$APP_DIR --config /repo/$APP_DIR/security/.gitleaks.toml \
             --report-format json --report-path /repo/gitleaks-report.json -v
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: secret-scan-report
@@ -111,11 +111,11 @@ jobs:
     needs: secret-scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Build image
         run: docker build -t secure-tasks:${GITHUB_SHA::7} $APP_DIR
       - run: docker save secure-tasks:${GITHUB_SHA::7} -o image.tar
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         with:
           name: image
           path: image.tar
@@ -126,7 +126,7 @@ jobs:
     needs: docker-build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v8
         with:
           name: image
       - run: docker load -i image.tar
@@ -138,7 +138,7 @@ jobs:
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.67.2 image \
             --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 --no-progress \
             secure-tasks:${GITHUB_SHA::7}
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: image-scan-report
@@ -167,11 +167,11 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v8
         with:
           name: image
       - run: docker load -i image.tar
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -186,8 +186,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/download-artifact@v6
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
         with:
           name: image
       - uses: helm/kind-action@v1
